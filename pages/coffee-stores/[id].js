@@ -8,7 +8,7 @@ const CoffeeStores = () => {
     <div>
       {" "}
       Coffee stores: {router.query.id}
-      <Link href="/">|||Back to home|||</Link>
+      <Link href="/coffee-stores/dynamic">|||to dynamic|||</Link>
     </div>
   );
 };
