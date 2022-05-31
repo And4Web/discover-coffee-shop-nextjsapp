@@ -22,6 +22,9 @@ export default function Home() {
           handleOnClick={handleOnClick}
           buttonText={"View stores nearby"}
         />
+        <div className={styles.heroImage}>
+          <Image src="/static/hero-image.png" width={700} height={400} />
+        </div>
       </main>
 
       {/* <footer className={styles.footer}></footer> */}
