@@ -5,6 +5,8 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/bannerComponent/banner.component";
 import Card from "../components/card.component/card.component";
 
+import coffeeStores from "../data/coffee-stores.json";
+
 export default function Home() {
   const handleOnClick = () => {
     console.log("clicked the button");
@@ -24,27 +26,26 @@ export default function Home() {
           buttonText={"View stores nearby"}
         />
         <div className={styles.heroImage}>
-          <Image src="/static/hero-image.png" width={700} height={400} />
+          <Image
+            src="/static/hero-image.png"
+            width={700}
+            height={400}
+            alt="hero-image"
+          />
         </div>
         <div className={styles.cardLayout}>
-          <Card
-            name="Dark horse Cofee"
-            imgUrl="/static/hero-image.png"
-            href="/coffee-stores/darkhorse-coffee"
-            className={styles.card}
-          />
-          <Card
-            name="Dark horse Cofee"
-            imgUrl="/static/hero-image.png"
-            href="/coffee-stores/darkhorse-coffee"
-            className={styles.card}
-          />
-          <Card
-            name="Dark horse Cofee"
-            imgUrl="/static/hero-image.png"
-            href="/coffee-stores/darkhorse-coffee"
-            className={styles.card}
-          />
+          {coffeeStores.map((coffeeStore) => {
+            const { name, id, imgUrl } = coffeeStore;
+            return (
+              <Card
+                key={id}
+                name={name}
+                imgUrl={imgUrl}
+                className={styles.card}
+                href={`/coffee-stores/${id}`}
+              />
+            );
+          })}
         </div>
       </main>
 
