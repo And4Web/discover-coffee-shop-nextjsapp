@@ -26,11 +26,26 @@ export default function Home() {
         <div className={styles.heroImage}>
           <Image src="/static/hero-image.png" width={700} height={400} />
         </div>
-        <Card
-          name="Dark horse Cofee"
-          imgUrl="/static/hero-image.png"
-          href="/coffee-stores/darkhorse-coffee"
-        />
+        <div className={styles.cardLayout}>
+          <Card
+            name="Dark horse Cofee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-stores/darkhorse-coffee"
+            className={styles.card}
+          />
+          <Card
+            name="Dark horse Cofee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-stores/darkhorse-coffee"
+            className={styles.card}
+          />
+          <Card
+            name="Dark horse Cofee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-stores/darkhorse-coffee"
+            className={styles.card}
+          />
+        </div>
       </main>
 
       {/* <footer className={styles.footer}></footer> */}
