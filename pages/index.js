@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
 import Banner from "../components/bannerComponent/banner.component";
+import Card from "../components/card.component/card.component";
 
 export default function Home() {
   const handleOnClick = () => {
@@ -25,6 +26,11 @@ export default function Home() {
         <div className={styles.heroImage}>
           <Image src="/static/hero-image.png" width={700} height={400} />
         </div>
+        <Card
+          name="Dark horse Cofee"
+          imgUrl="/static/hero-image.png"
+          href="/coffee-stores/darkhorse-coffee"
+        />
       </main>
 
       {/* <footer className={styles.footer}></footer> */}
