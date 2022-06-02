@@ -7,7 +7,17 @@ import Card from "../components/card.component/card.component";
 
 import coffeeStores from "../data/coffee-stores.json";
 
-export default function Home() {
+export async function getStaticProps(context) {
+  return {
+    props: {
+      coffeeStores,
+    },
+  };
+}
+
+export default function Home(props) {
+  console.log("props", props);
+
   const handleOnClick = () => {
     console.log("clicked the button");
   };
@@ -34,15 +44,15 @@ export default function Home() {
           />
         </div>
         <div className={styles.cardLayout}>
-          {coffeeStores.map((coffeeStore) => {
-            const { name, id, imgUrl } = coffeeStore;
+          {props.coffeeStores.map((coffeeStore) => {
+            // const { name, id, imgUrl } = coffeeStore;
             return (
               <Card
-                key={id}
-                name={name}
-                imgUrl={imgUrl}
+                key={coffeeStore.id}
+                name={coffeeStore.name}
+                imgUrl={coffeeStore.imgUrl}
                 className={styles.card}
-                href={`/coffee-stores/${id}`}
+                href={`/coffee-stores/${coffeeStore.id}`}
               />
             );
           })}
