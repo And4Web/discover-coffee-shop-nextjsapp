@@ -18,12 +18,16 @@ export function getStaticProps(staticProps) {
 export function getStaticPaths() {
   return {
     paths: [{ params: { id: "0" } }, { params: { id: "1" } }],
-    fallback: false,
+    fallback: true,
   };
 }
 
 const CoffeeStores = (props) => {
   const router = useRouter();
+  if (router.isFallback) {
+    return <h1>Loading...</h1>;
+  }
+  const { name, address } = props.coffeStores;
   // console.log("router", router);
   // console.log("props", props);
   return (
@@ -31,8 +35,8 @@ const CoffeeStores = (props) => {
       {" "}
       Coffee stores: {router.query.id}
       <Link href="/coffee-stores/dynamic">|||to dynamic|||</Link>
-      <p>{props.coffeStores.address}</p>
-      <p>{props.coffeStores.name}</p>
+      <p>{address}</p>
+      <p>{name}</p>
     </div>
   );
 };
