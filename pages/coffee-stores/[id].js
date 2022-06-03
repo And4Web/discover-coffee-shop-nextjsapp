@@ -63,30 +63,39 @@ const CoffeeStores = (props) => {
 
         <div className={cls("glass", styles.col2)}>
           <div className={styles.iconWrapper}>
-            <Image
-              src="/static/icons/places.svg"
-              alt=""
-              height={24}
-              width={24}
-            ></Image>
+            <div className={styles.storeImgWrapper}>
+              <Image
+                src="/static/icons/places.svg"
+                alt=""
+                className={styles.storeImg}
+                height={24}
+                width={24}
+              ></Image>
+            </div>
             <p className={styles.text}>{address}</p>
           </div>
           <div className={styles.iconWrapper}>
-            <Image
-              src="/static/icons/nearMe.svg"
-              alt=""
-              height={24}
-              width={24}
-            ></Image>
+            <div className={styles.storeImgWrapper}>
+              <Image
+                src="/static/icons/nearMe.svg"
+                alt=""
+                className={styles.storeImg}
+                height={24}
+                width={24}
+              ></Image>
+            </div>
             <p className={styles.text}>{neighbourhood}</p>
           </div>
           <div className={styles.iconWrapper}>
-            <Image
-              src="/static/icons/stars.svg"
-              alt=""
-              height={24}
-              width={24}
-            ></Image>
+            <div className={styles.storeImgWrapper}>
+              <Image
+                src="/static/icons/stars.svg"
+                alt=""
+                className={styles.storeImg}
+                height={24}
+                width={24}
+              ></Image>
+            </div>
             <p className={styles.text}>3.5</p>
           </div>
 
