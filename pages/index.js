@@ -5,13 +5,16 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/bannerComponent/banner.component";
 import Card from "../components/card.component/card.component";
 
+import { fetchCoffeeStores } from "../lib/coffe-stores";
+
 import coffeeStoresData from "../data/coffee-stores.json";
 
 export async function getStaticProps(context) {
+  const coffeeStores = await fetchCoffeeStores();
   return {
     props: {
-      coffeeStores: coffeeStoresData,
-    },
+      coffeeStores,
+    }, // will be passed to the page component as props
   };
 }
 
