@@ -100,7 +100,7 @@ const CoffeeStores = (props) => {
           </div>
 
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
-            Up Vote!
+            Up Vote
           </button>
         </div>
       </div>
