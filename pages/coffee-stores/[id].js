@@ -5,7 +5,6 @@ import Image from "next/image";
 import styles from "../../styles/coffee-stores.module.css";
 import cls from "classnames";
 
-// import coffeeStoresData from "../../data/coffee-stores.json";
 import {fetchCoffeeStores} from '../../lib/coffee-stores'
 
 export async function getStaticProps(staticProps) {
@@ -13,8 +12,9 @@ export async function getStaticProps(staticProps) {
   const coffeeStoresData = await fetchCoffeeStores();
   return {
     props: {
-      coffeStores: coffeeStoresData.find(
-        (coffeeStore) => coffeeStore.fsq_id.toString() === params.id
+      listFull: coffeeStoresData,
+      coffeeStores: coffeeStoresData.find(
+        (coffeeStore) => coffeeStore.id.toString() === params.id
       ),
     },
   };
@@ -25,7 +25,7 @@ export async function getStaticPaths() {
   const paths = coffeeStoresData.map((coffeeStore) => {
     return {
       params: {
-        id: coffeeStore.fsq_id.toString(),
+        id: coffeeStore.id.toString(),
       },
     };
   });
@@ -40,7 +40,8 @@ const CoffeeStores = (props) => {
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   }
-  const { name, location, imgUrl } = props.coffeStores;
+  const { name, address, neighborhood, imgUrl } = props.coffeeStores;
+  console.log("CoffeeStores full list: ", props.listFull)
 
   const handleUpvoteButton = () => {
     console.log("handle upvote");
@@ -64,7 +65,7 @@ const CoffeeStores = (props) => {
         </div>
 
         <div className={cls("glass", styles.col2)}>
-          <div className={styles.iconWrapper}>
+          {address && <div className={styles.iconWrapper}>
             <div className={styles.storeImgWrapper}>
               <Image
                 src="/static/icons/places.svg"
@@ -74,9 +75,10 @@ const CoffeeStores = (props) => {
                 width={24}
               ></Image>
             </div>
-            <p className={styles.text}>{location.address}</p>
-          </div>
-          <div className={styles.iconWrapper}>
+            <p className={styles.text}>{address}</p>
+          </div>}
+
+          {neighborhood && <div className={styles.iconWrapper}>
             <div className={styles.storeImgWrapper}>
               <Image
                 src="/static/icons/nearMe.svg"
@@ -86,8 +88,8 @@ const CoffeeStores = (props) => {
                 width={24}
               ></Image>
             </div>
-            <p className={styles.text}>{location.locality}</p>
-          </div>
+            <p className={styles.text}>{neighborhood}</p>
+          </div>}
           <div className={styles.iconWrapper}>
             <div className={styles.storeImgWrapper}>
               <Image
