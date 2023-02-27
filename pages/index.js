@@ -5,13 +5,14 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/bannerComponent/banner.component";
 import Card from "../components/card.component/card.component";
 
-import { fetchCoffeeStores } from "../lib/coffe-stores";
+// import { fetchCoffeeStores } from "../lib/coffe-stores";
 
-// import coffeeStoresData from "../data/coffee-stores.json";
+import coffeeStoresData from "../data/coffee-stores.json";
 
 export async function getStaticProps(context) {
-  const coffeeStoresData = await fetchCoffeeStores();
-  return {
+  // const coffeeStoresData = await fetchCoffeeStores();
+  
+  return {    
     props: {
       coffeeStores: coffeeStoresData,
     }, // will be passed to the page component as props
@@ -20,10 +21,13 @@ export async function getStaticProps(context) {
 
 export default function Home(props) {
   // console.log("props", props);
+  const {coffeeStores} = props;
 
   const handleOnClick = () => {
     console.log("clicked the button");
   };
+
+  // console.log('data from foursquare: ', coffeeStores)
 
   return (
     <div className={styles.container}>
@@ -54,10 +58,14 @@ export default function Home(props) {
                 // const { name, id, imgUrl } = coffeeStore;
                 return (
                   <Card
+                    // key={coffeeStore.fsq_id}
                     key={coffeeStore.id}
                     name={coffeeStore.name}
+                    // imgUrl="/static/vercel.svg"
                     imgUrl={coffeeStore.imgUrl}
+                    // imgUrl={coffeeStore.categories[0].icon.prefix}
                     className={styles.card}
+                    // href={`/coffee-stores/${coffeeStore.fsq_id}`}
                     href={`/coffee-stores/${coffeeStore.id}`}
                   />
                 );
