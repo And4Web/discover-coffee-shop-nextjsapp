@@ -5,25 +5,27 @@ import Image from "next/image";
 import styles from "../../styles/coffee-stores.module.css";
 import cls from "classnames";
 
-import coffeeStoresData from "../../data/coffee-stores.json";
+// import coffeeStoresData from "../../data/coffee-stores.json";
+import {fetchCoffeeStores} from '../../lib/coffee-stores'
 
-export function getStaticProps(staticProps) {
+export async function getStaticProps(staticProps) {
   const { params } = staticProps;
-
+  const coffeeStoresData = await fetchCoffeeStores();
   return {
     props: {
       coffeStores: coffeeStoresData.find(
-        (coffeeStore) => coffeeStore.id.toString() === params.id
+        (coffeeStore) => coffeeStore.fsq_id.toString() === params.id
       ),
     },
   };
 }
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const coffeeStoresData = await fetchCoffeeStores();
   const paths = coffeeStoresData.map((coffeeStore) => {
     return {
       params: {
-        id: coffeeStore.id.toString(),
+        id: coffeeStore.fsq_id.toString(),
       },
     };
   });
@@ -38,7 +40,7 @@ const CoffeeStores = (props) => {
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   }
-  const { name, address, neighbourhood, imgUrl } = props.coffeStores;
+  const { name, location, imgUrl } = props.coffeStores;
 
   const handleUpvoteButton = () => {
     console.log("handle upvote");
@@ -58,7 +60,7 @@ const CoffeeStores = (props) => {
           <div className={styles.nameWrappper}>
             <h1 className={styles.name}>{name}</h1>
           </div>
-          <Image src={imgUrl} alt={name} height={360} width={600}></Image>
+          <Image src={imgUrl || "https://purepng.com/public/uploads/large/purepng.com-cup-mug-coffeecupmufcoffeebean-1411527406018xgn16.png"} alt={name} height={360} width={600}></Image>
         </div>
 
         <div className={cls("glass", styles.col2)}>
@@ -72,7 +74,7 @@ const CoffeeStores = (props) => {
                 width={24}
               ></Image>
             </div>
-            <p className={styles.text}>{address}</p>
+            <p className={styles.text}>{location.address}</p>
           </div>
           <div className={styles.iconWrapper}>
             <div className={styles.storeImgWrapper}>
@@ -84,7 +86,7 @@ const CoffeeStores = (props) => {
                 width={24}
               ></Image>
             </div>
-            <p className={styles.text}>{neighbourhood}</p>
+            <p className={styles.text}>{location.locality}</p>
           </div>
           <div className={styles.iconWrapper}>
             <div className={styles.storeImgWrapper}>

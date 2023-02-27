@@ -5,12 +5,12 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/bannerComponent/banner.component";
 import Card from "../components/card.component/card.component";
 
-// import { fetchCoffeeStores } from "../lib/coffe-stores";
+import { fetchCoffeeStores } from "../lib/coffee-stores";
 
-import coffeeStoresData from "../data/coffee-stores.json";
+// import coffeeStoresData from "../data/coffee-stores.json";
 
 export async function getStaticProps(context) {
-  // const coffeeStoresData = await fetchCoffeeStores();
+  const coffeeStoresData = await fetchCoffeeStores();
   
   return {    
     props: {
@@ -58,15 +58,15 @@ export default function Home(props) {
                 // const { name, id, imgUrl } = coffeeStore;
                 return (
                   <Card
-                    // key={coffeeStore.fsq_id}
-                    key={coffeeStore.id}
+                    key={coffeeStore.fsq_id}
+                    // key={coffeeStore.id}
                     name={coffeeStore.name}
-                    // imgUrl="/static/vercel.svg"
-                    imgUrl={coffeeStore.imgUrl}
+                    // imgUrl="https://purepng.com/public/uploads/large/purepng.com-cup-mug-coffeecupmufcoffeebean-1411527406018xgn16.png"
+                    imgUrl={coffeeStore.imgUrl || "https://purepng.com/public/uploads/large/purepng.com-cup-mug-coffeecupmufcoffeebean-1411527406018xgn16.png"}
                     // imgUrl={coffeeStore.categories[0].icon.prefix}
                     className={styles.card}
-                    // href={`/coffee-stores/${coffeeStore.fsq_id}`}
-                    href={`/coffee-stores/${coffeeStore.id}`}
+                    href={`/coffee-stores/${coffeeStore.fsq_id}`}
+                    // href={`/coffee-stores/${coffeeStore.id}`}
                   />
                 );
               })}

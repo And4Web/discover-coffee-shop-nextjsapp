@@ -16,7 +16,7 @@ const Card = (props) => {
           <div className={styles.cardImageWrapper}>
             <Image
               className={styles.cardImage}
-              src={imgUrl}
+              src={imgUrl || "https://purepng.com/public/uploads/large/purepng.com-cup-mug-coffeecupmufcoffeebean-1411527406018xgn16.png"}
               alt={name}
               width={260}
               height={160}
