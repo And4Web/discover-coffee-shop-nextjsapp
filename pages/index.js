@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -8,6 +8,7 @@ import Card from "../components/card.component/card.component";
 
 import { fetchCoffeeStores } from "../lib/coffee-stores";
 import useTrackLocation from "../hooks/use-track-location";
+import { ACTION_TYPES, StoreContext } from './_app';
 
 export async function getStaticProps(context) {
   const coffeeStoresData = await fetchCoffeeStores();
@@ -21,13 +22,16 @@ export async function getStaticProps(context) {
 
 export default function Home(props) {
   const coffeeStores = props.coffeeStores;
-  const {latLong, handleTrackLocation, locationErrorMsg, isFindingLocation} = useTrackLocation();
+  const { handleTrackLocation, locationErrorMsg, isFindingLocation} = useTrackLocation();
 
-  const [coffeeStoresNearby, setCoffeeStoresNearby] = useState("");
+  // const [coffeeStoresNearby, setCoffeeStoresNearby] = useState("");
+  const {dispatch, state} = useContext(StoreContext);  
+  const {coffeeStoresNearby, latLong} = state;
+
   const [fetchingError, setFetchingError] = useState(null);
 
   // console.log("CoffeeStores: ", coffeeStores);
-  console.log({latLong, locationErrorMsg})
+  // console.log({latLong, locationErrorMsg})
 
   const handleOnClick = () => {
     console.log("clicked the button");
@@ -35,12 +39,17 @@ export default function Home(props) {
   };
 
   useEffect(() => {  
-    const effect = async () => {
+    const effect = async () => {    
+      // const {coffeeStores, latLong} = state;
       if(latLong){
         try {
           const fetchedCoffeeStores = await fetchCoffeeStores(latLong);
-          console.log({fetchedCoffeeStores})
-          setCoffeeStoresNearby(fetchedCoffeeStores);
+          // console.log({fetchedCoffeeStores})
+          // setCoffeeStoresNearby(fetchedCoffeeStores);
+          dispatch({
+            type: ACTION_TYPES.SET_COFFEE_STORES,
+            payload: {coffeeStoresNearby: fetchedCoffeeStores}
+          })
         } catch (error) {
           console.log({error})
           setFetchingError(error.message);
@@ -76,7 +85,7 @@ export default function Home(props) {
         </div>
 
         {/* <=== Nearby Stores ===>*/}
-        {coffeeStoresNearby.length > 0 && (
+        {coffeeStoresNearby && (
           <>
             <h2 className={styles.heading2}>Nearby Stores</h2>
             <div className={styles.cardLayout}>
