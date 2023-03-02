@@ -8,8 +8,9 @@ const getCoffeeStoresByLocation = async (req, res) => {
     const {latLong, limit} = req.query;
     console.log("query: ", req.query);
     const response = await fetchCoffeeStores(latLong, limit);
+    // const data = response.json();
 
-    return res.status(200).json({response: response})
+    return res.status(200).json({response})
   } catch (error) {
     console.error("Something went wrong: ", error);
     return res.status(500).json({Error: error.message})

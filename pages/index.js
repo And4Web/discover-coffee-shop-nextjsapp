@@ -41,12 +41,15 @@ export default function Home(props) {
     const effect = async () => {
       if(latLong){
         try {
-          const fetchedCoffeeStores = await fetchCoffeeStores(latLong);
-          // console.log({fetchedCoffeeStores})
+          // const fetchedCoffeeStores = await fetchCoffeeStores(latLong);
+          const fetchedCoffeeStores = await fetch(`/api/getCoffeeStoresByLocation?latLong=${latLong}&limit=30`)
+
+          const coffeeStoresNearby = await fetchedCoffeeStores.json();
+          
           // setCoffeeStoresNearby(fetchedCoffeeStores);
           dispatch({
             type: ACTION_TYPES.SET_COFFEE_STORES,
-            payload: {coffeeStoresNearby: fetchedCoffeeStores}
+            payload: {coffeeStoresNearby: coffeeStoresNearby.response}
           })
         } catch (error) {
           console.log({error})
