@@ -30,17 +30,14 @@ export default function Home(props) {
 
   const [fetchingError, setFetchingError] = useState(null);
 
-  // console.log("CoffeeStores: ", coffeeStores);
-  // console.log({latLong, locationErrorMsg})
-
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     console.log("clicked the button");
     handleTrackLocation();
+    
   };
 
   useEffect(() => {  
-    const effect = async () => {    
-      // const {coffeeStores, latLong} = state;
+    const effect = async () => {
       if(latLong){
         try {
           const fetchedCoffeeStores = await fetchCoffeeStores(latLong);
@@ -50,6 +47,8 @@ export default function Home(props) {
             type: ACTION_TYPES.SET_COFFEE_STORES,
             payload: {coffeeStoresNearby: fetchedCoffeeStores}
           })
+          console.log("store state: ", state);
+
         } catch (error) {
           console.log({error})
           setFetchingError(error.message);
@@ -85,7 +84,7 @@ export default function Home(props) {
         </div>
 
         {/* <=== Nearby Stores ===>*/}
-        {coffeeStoresNearby && (
+        {coffeeStoresNearby.length > 0 && (
           <>
             <h2 className={styles.heading2}>Nearby Stores</h2>
             <div className={styles.cardLayout}>

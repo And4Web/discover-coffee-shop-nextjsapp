@@ -12,6 +12,7 @@ export async function getStaticProps(staticProps) {
   const coffeeStoresData = await fetchCoffeeStores();
   const findCoffeeStoreById = coffeeStoresData.find(
     (coffeeStore) => coffeeStore.id.toString() === params.id)
+
   return {
     props: {
       listFull: coffeeStoresData,
@@ -29,6 +30,7 @@ export async function getStaticPaths() {
       },
     };
   });
+
   return {
     paths,
     fallback: true,
@@ -41,7 +43,8 @@ const CoffeeStores = (props) => {
     return <h1>Loading...</h1>;
   }
   const { name, address, neighborhood, imgUrl } = props.coffeeStores;
-  console.log("CoffeeStores full list: ", props.listFull)
+
+  // console.log("CoffeeStores full list: ", props.listFull)
 
   const handleUpvoteButton = () => {
     console.log("handle upvote");

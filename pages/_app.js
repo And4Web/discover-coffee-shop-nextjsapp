@@ -13,14 +13,13 @@ const storeReducer = (state, action) => {
     case ACTION_TYPES.SET_LAT_LONG:
       return {...state, latLong: action.payload.latLong}
     case ACTION_TYPES.SET_COFFEE_STORES:
-      return {...state, coffeeStoresNearby: action.payload.coffeeStores}
+      return {...state, coffeeStoresNearby: action.payload.coffeeStoresNearby}
     default:
       throw new Error(`Unhandled Action Type: ${action.type}`)
   }
 }
 
 const StoreProvider = ({children}) => { 
-
   const initialState = {
     latLong: "",
     coffeeStoresNearby: []

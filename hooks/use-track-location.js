@@ -3,8 +3,8 @@ import {ACTION_TYPES, StoreContext} from '../pages/_app';
 
 const useTrackLocation = function() {
   const [locationErrorMsg, setLocationErrorMsg] = useState("");
-  // const [latLong, setLatLong] = useState("");
   const [isFindingLocation, setIsFindingLocation] = useState(false);
+  // const [latLong, setLatLong] = useState("");
 
   const {dispatch} = useContext(StoreContext);
 
