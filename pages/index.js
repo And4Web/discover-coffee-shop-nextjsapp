@@ -31,8 +31,9 @@ export default function Home(props) {
   const [fetchingError, setFetchingError] = useState(null);
 
   const handleOnClick = async () => {
-    console.log("clicked the button");
     handleTrackLocation();
+    console.log("clicked the button");
+    console.log("store state: ", state);
     
   };
 
@@ -47,8 +48,6 @@ export default function Home(props) {
             type: ACTION_TYPES.SET_COFFEE_STORES,
             payload: {coffeeStoresNearby: fetchedCoffeeStores}
           })
-          console.log("store state: ", state);
-
         } catch (error) {
           console.log({error})
           setFetchingError(error.message);

@@ -1,3 +1,4 @@
+import {useState, useEffect, useContext} from 'react';
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
@@ -6,9 +7,13 @@ import styles from "../../styles/coffee-stores.module.css";
 import cls from "classnames";
 
 import {fetchCoffeeStores} from '../../lib/coffee-stores'
+import {StoreContext} from '../_app';
+import {isEmpty} from '../../utils/isEmpty';
+
 
 export async function getStaticProps(staticProps) {
   const { params } = staticProps;
+
   const coffeeStoresData = await fetchCoffeeStores();
   const findCoffeeStoreById = coffeeStoresData.find(
     (coffeeStore) => coffeeStore.id.toString() === params.id)
@@ -16,7 +21,7 @@ export async function getStaticProps(staticProps) {
   return {
     props: {
       listFull: coffeeStoresData,
-      coffeeStores: findCoffeeStoreById ? findCoffeeStoreById : {}
+      coffeeStore: findCoffeeStoreById ? findCoffeeStoreById : {}
     },
   };
 }
@@ -38,13 +43,36 @@ export async function getStaticPaths() {
 }
 
 const CoffeeStores = (props) => {
+  const [coffeeStore, setCoffeeStore] = useState(props.coffeeStore);
+  const {state} = useContext(StoreContext);  
+  const {coffeeStoresNearby} = state;
+
   const router = useRouter();
+  const id = router.query.id;
+  
+  useEffect(()=>{
+    const effect = () => {
+      if(isEmpty(props.coffeeStore)){
+        const findCoffeeStoreById = coffeeStoresNearby.find(
+          (coffeeStore) => coffeeStore.id.toString() === id)
+        // console.log("new store found: ", findCoffeeStoreById);
+        setCoffeeStore(findCoffeeStoreById);
+      } 
+    }
+    effect();
+  }, [id])
+
   if (router.isFallback) {
     return <h1>Loading...</h1>;
-  }
-  const { name, address, neighborhood, imgUrl } = props.coffeeStores;
+  } 
+  
+  // console.log("context state from single store page: ", state);  
+
+  const { name, address, neighborhood, imgUrl } = coffeeStore;  
 
   // console.log("CoffeeStores full list: ", props.listFull)
+  // console.log("CoffeeStore by ID in props: ", props.coffeeStore)
+  // console.log("CoffeeStore by ID in store: ", coffeeStore)
 
   const handleUpvoteButton = () => {
     console.log("handle upvote");
@@ -78,7 +106,7 @@ const CoffeeStores = (props) => {
                 width={24}
               ></Image>
             </div>
-            <p className={styles.text}>{address}</p>
+            <p className={styles.text}>{address? address: `No address found`}</p>
           </div>}
 
           {neighborhood && <div className={styles.iconWrapper}>
@@ -91,7 +119,7 @@ const CoffeeStores = (props) => {
                 width={24}
               ></Image>
             </div>
-            <p className={styles.text}>{neighborhood}</p>
+            <p className={styles.text}>{neighborhood? neighborhood: `Nothing relevant found`}</p>
           </div>}
           <div className={styles.iconWrapper}>
             <div className={styles.storeImgWrapper}>
