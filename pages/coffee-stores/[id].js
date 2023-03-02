@@ -7,7 +7,7 @@ import styles from "../../styles/coffee-stores.module.css";
 import cls from "classnames";
 
 import {fetchCoffeeStores} from '../../lib/coffee-stores'
-import {StoreContext} from '../_app';
+import {StoreContext} from '../../store/store-context';
 import {isEmpty} from '../../utils/isEmpty';
 
 
