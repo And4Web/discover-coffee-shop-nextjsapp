@@ -49,6 +49,32 @@ const CoffeeStores = (props) => {
 
   const router = useRouter();
   const id = router.query.id;
+
+  const handleCreateCoffeeStore = async (data) => {
+    try {
+      const {id, name, address, neighborhood, imgUrl} = data;
+
+      const response = fetch('/api/createCoffeeStore', {
+        method: "POST",
+        headers: {
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify({id: `${id}`,
+        name, 
+        address: address || "", 
+        neighborhood: neighborhood || "", 
+        imgUrl
+      })      
+      })
+
+      const dbCoffeeStore = response.json();
+
+      console.log("dbCoffeeStore: ", dbCoffeeStore);
+
+    } catch (error) {
+      console.error("Error creating store: ", error);
+    }
+  }
   
   useEffect(()=>{
     const effect = () => {
@@ -56,11 +82,17 @@ const CoffeeStores = (props) => {
         const findCoffeeStoreById = coffeeStoresNearby.find(
           (coffeeStore) => coffeeStore.id.toString() === id)
         // console.log("new store found: ", findCoffeeStoreById);
-        setCoffeeStore(findCoffeeStoreById);
-      } 
+
+        if(findCoffeeStoreById){
+          setCoffeeStore(findCoffeeStoreById);
+          handleCreateCoffeeStore(findCoffeeStoreById);
+        }
+      } else{
+        handleCreateCoffeeStore(props.coffeeStore)
+      }
     }
     effect();
-  }, [id])
+  }, [id, props, props.CoffeeStore])
 
   if (router.isFallback) {
     return <h1>Loading...</h1>;
