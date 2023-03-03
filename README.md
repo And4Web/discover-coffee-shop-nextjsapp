@@ -36,3 +36,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 Api's used in this project: 
 (1) Foursqaure for getting places according to the query provided.
 (2) Unsplash to get images as required.
+(3) Airtable to store our data in form of a spreadsheet.
