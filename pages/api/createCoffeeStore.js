@@ -1,19 +1,16 @@
-import {table, getMinifiedRecords} from '../../lib/airtable';
+import {table, getMinifiedRecords, findRecordById} from '../../lib/airtable';
 
 const createCoffeeStore = async (req, res) => {  
   try {
     const {id, name, address, neighborhood, voting, imgUrl} = req.body;
+    
     if(id){
       if(req.method === "POST"){
         //find a record:
-        const findCoffeeStoreRecords = await table.select({
-          filterByFormula: `id="${id}"`,
-        }).firstPage();
-  
-        if(findCoffeeStoreRecords.length !== 0){
-          const records = getMinifiedRecords(findCoffeeStoreRecords);
+        const record = await findRecordById(id);  
 
-          res.json(records);
+        if(record.length !== 0){
+          res.json( record);
         }else {  
           if(name){
             //create a record:

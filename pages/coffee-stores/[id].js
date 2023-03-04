@@ -54,12 +54,13 @@ const CoffeeStores = (props) => {
     try {
       const {id, name, address, neighborhood, imgUrl} = data;
 
-      const response = fetch('/api/createCoffeeStore', {
+      const response = await fetch('/api/createCoffeeStore', {
         method: "POST",
         headers: {
           'Content-Type': "application/json"
         },
-        body: JSON.stringify({id: `${id}`,
+        body: JSON.stringify({
+        id: `${id}`,
         name, 
         address: address || "", 
         neighborhood: neighborhood || "", 
@@ -67,7 +68,7 @@ const CoffeeStores = (props) => {
       })      
       })
 
-      const dbCoffeeStore = response.json();
+      const dbCoffeeStore = await response.json();
 
       console.log("dbCoffeeStore: ", dbCoffeeStore);
 
@@ -77,15 +78,16 @@ const CoffeeStores = (props) => {
   }
   
   useEffect(()=>{
-    const effect = () => {
+    const effect = () => {      
       if(isEmpty(props.coffeeStore)){
-        const findCoffeeStoreById = coffeeStoresNearby.find(
-          (coffeeStore) => coffeeStore.id.toString() === id)
-        // console.log("new store found: ", findCoffeeStoreById);
-
-        if(findCoffeeStoreById){
-          setCoffeeStore(findCoffeeStoreById);
-          handleCreateCoffeeStore(findCoffeeStoreById);
+        if(coffeeStoresNearby.length > 0){
+          const findCoffeeStoreById = coffeeStoresNearby.find(
+            (coffeeStore) => coffeeStore.id.toString() === id)
+          // console.log("new store found: ", findCoffeeStoreById);        
+          if(findCoffeeStoreById){
+            setCoffeeStore(findCoffeeStoreById);
+            handleCreateCoffeeStore(findCoffeeStoreById);
+          }
         }
       } else{
         handleCreateCoffeeStore(props.coffeeStore)
