@@ -44,6 +44,7 @@ export async function getStaticPaths() {
 
 const CoffeeStores = (props) => {
   const [coffeeStore, setCoffeeStore] = useState(props.coffeeStore);
+  const [votingCount, setVotingCount] = useState(1);
   const {state} = useContext(StoreContext);  
   const {coffeeStoresNearby} = state;
 
@@ -78,7 +79,8 @@ const CoffeeStores = (props) => {
   }
   
   useEffect(()=>{
-    const effect = () => {      
+    const effect = () => {     
+      
       if(isEmpty(props.coffeeStore)){
         if(coffeeStoresNearby.length > 0){
           const findCoffeeStoreById = coffeeStoresNearby.find(
@@ -109,7 +111,9 @@ const CoffeeStores = (props) => {
   // console.log("CoffeeStore by ID in store: ", coffeeStore)
 
   const handleUpvoteButton = () => {
-    console.log("handle upvote");
+    let count = votingCount + 1;
+    setVotingCount(count);
+    // console.log("handle upvote: ", votingCount);
   };
 
   return (
@@ -165,7 +169,7 @@ const CoffeeStores = (props) => {
                 width={24}
               ></Image>
             </div>
-            <p className={styles.text}>3.5</p>
+            <p className={styles.text}>{votingCount}</p>
           </div>
 
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
