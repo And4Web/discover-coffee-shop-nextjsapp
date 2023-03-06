@@ -21,7 +21,7 @@ export async function getStaticProps(staticProps) {
 
   return {
     props: {
-      listFull: coffeeStoresData,
+      // listFull: coffeeStoresData,
       coffeeStore: findCoffeeStoreById ? findCoffeeStoreById : {}
     },
   };
@@ -53,10 +53,8 @@ const CoffeeStores = (props) => {
   }
   
   const [votingCount, setVotingCount] = useState(1);
+
   const {data, error} = useSwr(`/api/getCoffeeStoreById?id=${id}`, fetcher);
-  // if(data){
-  //   console.log("swr data: ", data[0])
-  // }
 
   const {state} = useContext(StoreContext);  
   const {coffeeStoresNearby} = state;  
@@ -82,8 +80,6 @@ const CoffeeStores = (props) => {
 
       const dbCoffeeStore = await response.json();
 
-      console.log("dbCoffeeStore: ", dbCoffeeStore);
-
     } catch (error) {
       console.error("Error creating store: ", error);
     }
@@ -96,7 +92,7 @@ const CoffeeStores = (props) => {
         if(coffeeStoresNearby.length > 0){
           const findCoffeeStoreById = coffeeStoresNearby.find(
             (coffeeStore) => coffeeStore.id.toString() === id)
-          // console.log("new store found: ", findCoffeeStoreById);        
+            
           if(findCoffeeStoreById){
             setCoffeeStore(findCoffeeStoreById);
             handleCreateCoffeeStore(findCoffeeStoreById);
@@ -123,19 +119,31 @@ const CoffeeStores = (props) => {
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   } 
-  
-  // console.log("context state from single store page: ", state);  
 
   const { name, address, neighborhood, imgUrl, voting } = coffeeStore;  
-
-  // console.log("CoffeeStores full list: ", props.listFull)
-  // console.log("CoffeeStore by ID in props: ", props.coffeeStore)
-  // console.log("CoffeeStore by ID in store: ", coffeeStore)
   
-  const handleUpvoteButton = () => {
-    let count = votingCount + 1;
-    setVotingCount(count);
-    // console.log("handle upvote: ", votingCount);
+  const handleUpvoteButton = async () => {
+    try {     
+      const response = await fetch('/api/favouriteCoffeeStoreById', {
+        method: "PUT",
+        headers: {
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify({
+        id
+      })      
+      })
+
+      const dbCoffeeStore = await response.json();
+
+      if(dbCoffeeStore.record && dbCoffeeStore.record.length > 0){
+        let count = votingCount + 1;
+        setVotingCount(count);
+      }
+
+    } catch (error) {
+      console.error("Error creating store: ", error);
+    }    
   };
 
   return (

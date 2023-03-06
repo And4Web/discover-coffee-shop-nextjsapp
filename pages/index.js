@@ -32,9 +32,6 @@ export default function Home(props) {
 
   const handleOnClick = async () => {
     handleTrackLocation();
-    console.log("clicked the button");
-    console.log("store state: ", state);
-    
   };
 
   useEffect(() => {  
@@ -52,7 +49,7 @@ export default function Home(props) {
             payload: {coffeeStoresNearby: coffeeStoresNearby.response}
           })
         } catch (error) {
-          console.log({error})
+          console.error({error})
           setFetchingError(error.message);
         }
       }
