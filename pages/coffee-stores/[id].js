@@ -1,5 +1,6 @@
 import {useState, useEffect, useContext} from 'react';
 import { useRouter } from "next/router";
+import useSwr from 'swr';
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
@@ -43,17 +44,26 @@ export async function getStaticPaths() {
 }
 
 const CoffeeStores = (props) => {
-  const [coffeeStore, setCoffeeStore] = useState(props.coffeeStore);
-  const [votingCount, setVotingCount] = useState(1);
-  const {state} = useContext(StoreContext);  
-  const {coffeeStoresNearby} = state;
-
   const router = useRouter();
   const id = router.query.id;
+  const [coffeeStore, setCoffeeStore] = useState(props.coffeeStore);
+
+  const fetcher = (url) => {
+    return fetch(url).then(res=>res.json());
+  }
+  
+  const [votingCount, setVotingCount] = useState(1);
+  const {data, error} = useSwr(`/api/getCoffeeStoreById?id=${id}`, fetcher);
+  // if(data){
+  //   console.log("swr data: ", data[0])
+  // }
+
+  const {state} = useContext(StoreContext);  
+  const {coffeeStoresNearby} = state;  
 
   const handleCreateCoffeeStore = async (data) => {
     try {
-      const {id, name, address, neighborhood, imgUrl} = data;
+      const {id, name, address, neighborhood, imgUrl, voting} = data;
 
       const response = await fetch('/api/createCoffeeStore', {
         method: "POST",
@@ -65,6 +75,7 @@ const CoffeeStores = (props) => {
         name, 
         address: address || "", 
         neighborhood: neighborhood || "", 
+        voting,
         imgUrl
       })      
       })
@@ -98,18 +109,29 @@ const CoffeeStores = (props) => {
     effect();
   }, [id, props, props.CoffeeStore])
 
+  useEffect(()=>{
+    const effect = () => {
+      if(data){
+        setCoffeeStore(data[0]);
+        // setVotingCount(data[0].voting);
+      }
+    }
+    effect();
+  }, [data])
+
+
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   } 
   
   // console.log("context state from single store page: ", state);  
 
-  const { name, address, neighborhood, imgUrl } = coffeeStore;  
+  const { name, address, neighborhood, imgUrl, voting } = coffeeStore;  
 
   // console.log("CoffeeStores full list: ", props.listFull)
   // console.log("CoffeeStore by ID in props: ", props.coffeeStore)
   // console.log("CoffeeStore by ID in store: ", coffeeStore)
-
+  
   const handleUpvoteButton = () => {
     let count = votingCount + 1;
     setVotingCount(count);
@@ -169,7 +191,7 @@ const CoffeeStores = (props) => {
                 width={24}
               ></Image>
             </div>
-            <p className={styles.text}>{votingCount}</p>
+            <p className={styles.text}>{voting}</p>
           </div>
 
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>

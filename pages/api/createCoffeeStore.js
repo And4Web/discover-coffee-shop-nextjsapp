@@ -21,7 +21,7 @@ const createCoffeeStore = async (req, res) => {
                   name,
                   address,
                   neighborhood,
-                  voting,
+                  voting: voting || 0,
                   imgUrl
                 }
               }

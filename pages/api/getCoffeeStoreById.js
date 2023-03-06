@@ -7,7 +7,7 @@ const getCoffeeStoreById = async (req, res) => {
     if(id){
       const record = await findRecordById(id);
       if(record.length !== 0){
-        res.status(200).json(records);
+        res.status(200).json(record);
       }else{
         res.status(400).json({message: `store with id <${id}> could not be found in our database.`});
       }
